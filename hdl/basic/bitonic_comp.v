@@ -39,15 +39,16 @@
 module bitonic_comp #(
 	parameter DATA_WIDTH = 16,
 	parameter POLARITY = 0,
-	parameter SIGNED = 0
+	parameter SIGNED = 0,
+	parameter REGOUT_EN = 0
 )
 (
 	input wire CLK,
 	input wire [DATA_WIDTH-1:0]A,
 	input wire [DATA_WIDTH-1:0]B,
-	output wire [DATA_WIDTH-1:0]H,
-	output wire [DATA_WIDTH-1:0]L,
-	output wire O
+	output reg [DATA_WIDTH-1:0]H,
+	output reg [DATA_WIDTH-1:0]L,
+	output reg O
 );
 
 reg [DATA_WIDTH-1:0]H_REG;
@@ -55,10 +56,6 @@ reg [DATA_WIDTH-1:0]L_REG;
 reg O_REG;
 
 wire LESS;
-
-assign H = H_REG;
-assign L = L_REG;
-assign O = O_REG;
 
 generate
 	if (SIGNED == 0) begin
@@ -68,16 +65,29 @@ generate
 	end
 	
 	if (POLARITY == 0) begin
-		always @(posedge CLK) begin
-			H_REG <= (LESS) ? A : B;
-			L_REG <= (LESS) ? B : A;
-			O_REG <= LESS;
+		always @(*) begin
+			H_REG = (LESS) ? A : B;
+			L_REG = (LESS) ? B : A;
+			O_REG = LESS;
 		end
 	end else begin
+		always @(*) begin
+			H_REG = (LESS) ? B : A;
+			L_REG = (LESS) ? A : B;
+			O_REG = ~LESS;
+		end
+	end
+	if (REGOUT_EN == 1) begin
 		always @(posedge CLK) begin
-			H_REG <= (LESS) ? B : A;
-			L_REG <= (LESS) ? A : B;
-			O_REG <= ~LESS;
+			H <= H_REG;
+			L <= L_REG;
+			O <= O_REG;
+		end
+	end else begin
+		always @(*) begin
+			H = H_REG;
+			L = L_REG;
+			O = O_REG;
 		end
 	end
 endgenerate
