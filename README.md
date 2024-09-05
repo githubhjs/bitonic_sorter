@@ -1,6 +1,8 @@
 # bitonic_sorter
-Bitonic sorter (Batcher's sorting network) written in Verilog, parameterizable and fully pipelined.
+Bitonic sorter (Batcher's sorting network) written in Verilog, parameterizable and fully pipelined*.
 Two interfaces available: basic interface and AXI-Stream.
+
+#### * Fully pipelined if PIPE_REG=1
 
 'bitonic_sort.v' is a top file with basic interface;
 'axis_bitonic_sort.v' - is a top file with AXI-Stream interface.
@@ -15,6 +17,10 @@ Two interfaces available: basic interface and AXI-Stream.
 * CHAN_NUM   - Number of channels
 * DIR        - Sorted direction (0 - ascending, 1 - descending)
 * SIGNED     - Signed or Unsigned (0 - unsigned, 1 - signed)
+* PIPE_REG   - Pipeline register bypass, enable each N-th clocking register
+
+#### Note for PIPE_REG
+If PIPE_REG=1, than all clocking registers are enabled in pipeline; PIPE_LINE=2 -> each second, 3-> each third and so on
 	
 ## Ports
 ### Basic
