@@ -39,8 +39,9 @@
 module bitonic_sort #(
 	parameter DATA_WIDTH = 16,	// 
 	parameter CHAN_NUM = 8,		// 
-	parameter DIR = 0,		// 0 - ascending, 1 - descending
-	parameter SIGNED = 0		// 0 - unsigned, 1 - signed
+	parameter DIR = 0,			// 0 - ascending, 1 - descending
+	parameter SIGNED = 0,		// 0 - unsigned, 1 - signed
+	parameter PIPE_REG = 1		// pipeline bypass, enable each N-th out reg 
 )
 (
 	input wire clk,
@@ -88,7 +89,8 @@ generate for (stage = 0; stage < STAGES; stage = stage + 1) begin: SORT_STAGE
 			.DATA_WIDTH(DATA_WIDTH),
 			.ORDER(BLOCK_ORDER),
 			.POLARITY(BLOCK_POLARITY),
-			.SIGNED(SIGNED)
+			.SIGNED(SIGNED),
+			.PIPE_REG(PIPE_REG)
 		) bitonic_block_inst (
 			.clk(clk),
 			.data_in(block_data_in),
