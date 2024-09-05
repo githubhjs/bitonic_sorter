@@ -40,7 +40,9 @@ module bitonic_node #(
 	parameter DATA_WIDTH = 16,
 	parameter ORDER = 0,
 	parameter POLARITY = 0,
-	parameter SIGNED = 0
+	parameter SIGNED = 0,
+	parameter PIPE_REG = 1,
+	parameter INDEX = 0
 )
 (
 	input wire clk,
@@ -49,6 +51,7 @@ module bitonic_node #(
 );
 
 localparam COMP_NUM = 2**ORDER;
+localparam REGOUT_EN = (INDEX % PIPE_REG) == 0;
 
 genvar i;
 
@@ -66,7 +69,8 @@ generate for (i = 0; i < COMP_NUM; i = i + 1) begin: COMP
 	bitonic_comp #(
 		.DATA_WIDTH(DATA_WIDTH),
 		.POLARITY(POLARITY),
-		.SIGNED(SIGNED)
+		.SIGNED(SIGNED),
+		.REGOUT_EN(REGOUT_EN)
 	) comp_inst (
 		.CLK(clk),
 		.A(A),
