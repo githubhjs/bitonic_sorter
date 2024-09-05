@@ -40,7 +40,8 @@ module bitonic_block #(
 	parameter DATA_WIDTH = 16,
 	parameter ORDER = 0,
 	parameter POLARITY = 0,
-	parameter SIGNED = 0
+	parameter SIGNED = 0,
+	parameter PIPE_REG = 1
 )
 (
 	input wire clk,
@@ -50,6 +51,19 @@ module bitonic_block #(
 
 localparam STAGES = ORDER + 1;
 localparam STAGE_DATA_WIDTH = DATA_WIDTH*2**(ORDER+1);
+
+function integer index(input integer SS, input integer BS);
+	integer i, j, ind;
+begin
+	ind = 0;
+	for (i = 0; i < SS; i = i + 1) begin
+		for (j = i+1; j < SS+1; j = j + 1) begin
+			ind = ind + 1;
+		end
+	end
+	index = ind + BS + 1;
+end
+endfunction
 
 wire [DATA_WIDTH*2**(ORDER+1)-1:0]stage_data[STAGES:0];
 
@@ -81,7 +95,9 @@ generate for (stage = 0; stage < STAGES; stage = stage + 1) begin: BLOCK_STAGE
 			.DATA_WIDTH(DATA_WIDTH),
 			.ORDER(NODE_ORDER),
 			.POLARITY(POLARITY),
-			.SIGNED(SIGNED)
+			.SIGNED(SIGNED),
+			.PIPE_REG(PIPE_REG),
+			.INDEX(index(ORDER, stage))
 		) bitonic_node_inst (
 			.clk(clk),
 			.data_in(node_data_in),
