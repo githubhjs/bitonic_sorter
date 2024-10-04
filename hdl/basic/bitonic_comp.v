@@ -47,13 +47,11 @@ module bitonic_comp #(
 	input wire [DATA_WIDTH-1:0]A,
 	input wire [DATA_WIDTH-1:0]B,
 	output reg [DATA_WIDTH-1:0]H,
-	output reg [DATA_WIDTH-1:0]L,
-	output reg O
+	output reg [DATA_WIDTH-1:0]L
 );
 
 reg [DATA_WIDTH-1:0]H_REG;
 reg [DATA_WIDTH-1:0]L_REG;
-reg O_REG;
 
 wire LESS;
 
@@ -68,26 +66,22 @@ generate
 		always @(*) begin
 			H_REG = (LESS) ? A : B;
 			L_REG = (LESS) ? B : A;
-			O_REG = LESS;
 		end
 	end else begin
 		always @(*) begin
 			H_REG = (LESS) ? B : A;
 			L_REG = (LESS) ? A : B;
-			O_REG = ~LESS;
 		end
 	end
 	if (REGOUT_EN == 1) begin
 		always @(posedge CLK) begin
 			H <= H_REG;
 			L <= L_REG;
-			O <= O_REG;
 		end
 	end else begin
 		always @(*) begin
 			H = H_REG;
 			L = L_REG;
-			O = O_REG;
 		end
 	end
 endgenerate
