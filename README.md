@@ -20,7 +20,7 @@ Two interfaces available: basic interface and AXI-Stream.
 * PIPE_REG   - Pipeline register bypass, enable each N-th clocking register
 
 #### Note for PIPE_REG
-If PIPE_REG=1, than all clocking registers are enabled in pipeline; PIPE_LINE=2 -> each second, 3-> each third and so on. If you need no registers at all set PIPE_REG with a value greater than a depth (latency).
+If PIPE_REG=1, than all clocking registers are enabled in pipeline; PIPE_LINE=2 -> each second, 3-> each third and so on. If you need no registers at all set PIPE_REG with 0 or a value greater than depth (latency).
 	
 ## Ports
 ### Basic
