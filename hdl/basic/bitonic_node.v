@@ -51,7 +51,7 @@ module bitonic_node #(
 );
 
 localparam COMP_NUM = 2**ORDER;
-localparam REGOUT_EN = (INDEX % PIPE_REG) == 0;
+localparam REGOUT_EN = (PIPE_REG == 0) ? 0 : ((INDEX % PIPE_REG) == 0);
 
 genvar i;
 
