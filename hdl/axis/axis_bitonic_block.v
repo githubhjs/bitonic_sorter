@@ -124,7 +124,7 @@ generate for (stage = 0; stage < STAGES; stage = stage + 1) begin: BLOCK_STAGE
 		assign s_axis_node_tuser = s_axis_stage_tuser[NODE_USER_WIDTH*(node + 1)-1-:NODE_USER_WIDTH];
 		assign m_axis_stage_tuser[NODE_USER_WIDTH*(node + 1)-1-:NODE_USER_WIDTH] = m_axis_node_tuser;
 		
-		if (node == 0) begin
+		if (node == 0) begin : gen_node_0
 			axis_bitonic_node #(
 				.DATA_WIDTH(DATA_WIDTH),
 				.USER_WIDTH(USER_WIDTH),
@@ -145,7 +145,7 @@ generate for (stage = 0; stage < STAGES; stage = stage + 1) begin: BLOCK_STAGE
 				.m_axis_tready(m_axis_stage_tready),
 				.m_axis_tlast(m_axis_stage_tlast)
 			);
-		end else begin
+		end else begin : gen_node_1
 			axis_bitonic_node #(
 				.DATA_WIDTH(DATA_WIDTH),
 				.USER_WIDTH(USER_WIDTH),

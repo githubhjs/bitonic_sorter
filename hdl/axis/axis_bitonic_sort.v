@@ -133,7 +133,7 @@ generate for (stage = 0; stage < STAGES; stage = stage + 1) begin: SORT_STAGE
 		assign s_axis_block_tuser = s_axis_stage_tuser[BLOCK_USER_WIDTH*(block+1)-1-:BLOCK_USER_WIDTH];
 		assign m_axis_stage_tuser[BLOCK_USER_WIDTH*(block+1)-1-:BLOCK_USER_WIDTH] = m_axis_block_tuser;
 		
-		if (block == 0) begin
+		if (block == 0) begin : gen_block_0
 			axis_bitonic_block #(
 				.DATA_WIDTH(DATA_WIDTH),
 				.USER_WIDTH(USER_WIDTH),
@@ -154,7 +154,7 @@ generate for (stage = 0; stage < STAGES; stage = stage + 1) begin: SORT_STAGE
 				.m_axis_tready(m_axis_stage_tready),
 				.m_axis_tlast(m_axis_stage_tlast)
 			);
-		end else begin
+		end else begin : gen_block_1
 			axis_bitonic_block #(
 				.DATA_WIDTH(DATA_WIDTH),
 				.USER_WIDTH(USER_WIDTH),

@@ -83,7 +83,7 @@ generate for (i = 0; i < COMP_NUM; i = i + 1) begin: COMP
 	assign m_axis_tuser[USER_WIDTH*(i + 1 + COMP_NUM * 0)-1-:USER_WIDTH] = user_h;
 	assign m_axis_tuser[USER_WIDTH*(i + 1 + COMP_NUM * 1)-1-:USER_WIDTH] = user_l;
 
-	if (i == 0) begin
+	if (i == 0) begin : gen_i_0
 		axis_bitonic_comp #(
 			.DATA_WIDTH(DATA_WIDTH),
 			.USER_WIDTH(USER_WIDTH),
@@ -103,7 +103,7 @@ generate for (i = 0; i < COMP_NUM; i = i + 1) begin: COMP
 			.m_axis_tready(m_axis_tready),
 			.m_axis_tlast(m_axis_tlast)
 		);
-	end else begin
+	end else begin : gen_i_1
 		axis_bitonic_comp #(
 			.DATA_WIDTH(DATA_WIDTH),
 			.USER_WIDTH(USER_WIDTH),
